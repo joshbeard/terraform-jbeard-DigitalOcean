@@ -1,0 +1,2 @@
+deploy_digitalocean:
+  image: hashicorp/terraform
