@@ -63,7 +63,7 @@ resource "digitalocean_record" "signalboxes_net_spf" {
   domain = digitalocean_domain.signalboxes_net.name
   type   = "TXT"
   name   = "@"
-  value  = "v=spf1 a mx include:spf.migadu.com ~all"
+  value  = "v=spf1 include:spf.migadu.com -all"
 }
 
 resource "digitalocean_record" "signalboxes_net_dkim" {
@@ -73,9 +73,39 @@ resource "digitalocean_record" "signalboxes_net_dkim" {
   value  = "v=DKIM1; k=rsa; s=email; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDfa3IQimbbUyyhUlx6Fa8erWgqYICetFbURdQRFSvaldhi2R64nkSEW2k0ECl0gDB3k+DM2DeFcR06YSU7e8ogh5xae88TEc398mNpjz//ATeX/5WixhViM9RWoYdT07Ueql3qv/OKOCPsfqL6Enng6UGrZ9pws6DDj4dpQz1wywIDAQAB"
 }
 
+resource "digitalocean_record" "signalboxes_net_dkim1" {
+  domain = digitalocean_domain.signalboxes_net.name
+  type   = "CNAME"
+  name   = "key1._domainkey.signalboxes.net."
+  value  = "key1.signalboxes.net._domainkey.migadu.com."
+}
+
+resource "digitalocean_record" "signalboxes_net_dkim2" {
+  domain = digitalocean_domain.signalboxes_net.name
+  type   = "CNAME"
+  name   = "key2._domainkey.signalboxes.net."
+  value  = "key2.signalboxes.net._domainkey.migadu.com."
+}
+
+resource "digitalocean_record" "signalboxes_net_dkim3" {
+  domain = digitalocean_domain.signalboxes_net.name
+  type   = "CNAME"
+  name   = "key3._domainkey.signalboxes.net."
+  value  = "key3.signalboxes.net._domainkey.migadu.com."
+}
+
+# DMARC
 resource "digitalocean_record" "signalboxes_net_dmarc" {
   domain = digitalocean_domain.signalboxes_net.name
   type   = "TXT"
   name   = "_dmarc.signalboxes.net."
-  value  = "v=DMARC1; p=none; fo=1; rua=mailto:admin@signalboxes.net"
+  value  = "v=DMARC1; p=reject;"
+}
+
+# For Migadu verification
+resource "digitalocean_record" "signalboxes_net_migadu" {
+  domain = digitalocean_domain.signalboxes_net.name
+  type   = "TXT"
+  name   = "@"
+  value  = "hosted-email-verify=js7j3d9c"
 }

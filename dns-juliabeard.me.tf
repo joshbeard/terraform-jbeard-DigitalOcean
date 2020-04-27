@@ -63,7 +63,7 @@ resource "digitalocean_record" "juliabeard_me_spf" {
   domain = digitalocean_domain.juliabeard_me.name
   type   = "TXT"
   name   = "@"
-  value  = "v=spf1 a mx include:spf.migadu.com ~all"
+  value  = "v=spf1 include:spf.migadu.com -all"
 }
 
 resource "digitalocean_record" "juliabeard_me_dkim" {
@@ -73,9 +73,39 @@ resource "digitalocean_record" "juliabeard_me_dkim" {
   value  = "v=DKIM1; k=rsa; s=email; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDfa3IQimbbUyyhUlx6Fa8erWgqYICetFbURdQRFSvaldhi2R64nkSEW2k0ECl0gDB3k+DM2DeFcR06YSU7e8ogh5xae88TEc398mNpjz//ATeX/5WixhViM9RWoYdT07Ueql3qv/OKOCPsfqL6Enng6UGrZ9pws6DDj4dpQz1wywIDAQAB"
 }
 
+resource "digitalocean_record" "juliabeard_me_dkim1" {
+  domain = digitalocean_domain.juliabeard_me.name
+  type   = "CNAME"
+  name   = "key1._domainkey.juliabeard.me."
+  value  = "key1.juliabeard.me._domainkey.migadu.com."
+}
+
+resource "digitalocean_record" "juliabeard_me_dkim2" {
+  domain = digitalocean_domain.juliabeard_me.name
+  type   = "CNAME"
+  name   = "key2._domainkey.juliabeard.me."
+  value  = "key2.juliabeard.me._domainkey.migadu.com."
+}
+
+resource "digitalocean_record" "juliabeard_me_dkim3" {
+  domain = digitalocean_domain.juliabeard_me.name
+  type   = "CNAME"
+  name   = "key3._domainkey.juliabeard.me."
+  value  = "key3.juliabeard.me._domainkey.migadu.com."
+}
+
+# DMARC
 resource "digitalocean_record" "juliabeard_me_dmarc" {
   domain = digitalocean_domain.juliabeard_me.name
   type   = "TXT"
   name   = "_dmarc.juliabeard.me."
-  value  = "v=DMARC1; p=none; fo=1; rua=mailto:admin@juliabeard.me"
+  value  = "v=DMARC1; p=reject;"
+}
+
+# For Migadu verification
+resource "digitalocean_record" "juliabeard_me_migadu" {
+  domain = digitalocean_domain.juliabeard_me.name
+  type   = "TXT"
+  name   = "@"
+  value  = "hosted-email-verify=rxz3degh"
 }

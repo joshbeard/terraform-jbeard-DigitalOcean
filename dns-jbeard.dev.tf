@@ -63,7 +63,7 @@ resource "digitalocean_record" "jbeard_dev_spf" {
   domain = digitalocean_domain.jbeard_dev.name
   type   = "TXT"
   name   = "@"
-  value  = "v=spf1 a mx include:spf.migadu.com ~all"
+  value  = "v=spf1 include:spf.migadu.com -all"
 }
 
 resource "digitalocean_record" "jbeard_dev_dkim" {
@@ -73,9 +73,39 @@ resource "digitalocean_record" "jbeard_dev_dkim" {
   value  = "v=DKIM1; k=rsa; s=email; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCwLut0Bap/mh3HE2rDPchHVrEcaKAfE1X5/k+7fBiIdRgk8GFoMiG3WpbaWygLS0Hw03ZjdeiIPQW/bfB7tz88NIwhIlq4VI2w+oBjF9pciLgzu0gFRGEC1KdRjn7M3YD/KTURS9kAAkgLKFWXqrUsuhuM00mZQn72MA/N9DSPfwIDAQAB"
 }
 
+resource "digitalocean_record" "jbeard_dev_dkim1" {
+  domain = digitalocean_domain.jbeard_dev.name
+  type   = "CNAME"
+  name   = "key1._domainkey.jbeard.dev."
+  value  = "key1.jbeard.dev._domainkey.migadu.com."
+}
+
+resource "digitalocean_record" "jbeard_dev_dkim2" {
+  domain = digitalocean_domain.jbeard_dev.name
+  type   = "CNAME"
+  name   = "key2._domainkey.jbeard.dev."
+  value  = "key2.jbeard.dev._domainkey.migadu.com."
+}
+
+resource "digitalocean_record" "jbeard_dev_dkim3" {
+  domain = digitalocean_domain.jbeard_dev.name
+  type   = "CNAME"
+  name   = "key3._domainkey.jbeard.dev."
+  value  = "key3.jbeard.dev._domainkey.migadu.com."
+}
+
+# DMARC
 resource "digitalocean_record" "jbeard_dev_dmarc" {
   domain = digitalocean_domain.jbeard_dev.name
   type   = "TXT"
   name   = "_dmarc.jbeard.dev."
-  value  = "v=DMARC1; p=none; fo=1; rua=mailto:admin@jbeard.dev"
+  value  = "v=DMARC1; p=reject;"
+}
+
+# For Migadu verification
+resource "digitalocean_record" "jbeard_dev_migadu" {
+  domain = digitalocean_domain.jbeard_dev.name
+  type   = "TXT"
+  name   = "@"
+  value  = "hosted-email-verify=3zbtwhss"
 }
